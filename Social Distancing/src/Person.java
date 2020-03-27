@@ -25,7 +25,7 @@ public class Person {
 		x = (int)(Math.random()*790+0);
 		y = (int)(Math.random()*590+0);
 		
-		//code to make 8% of the Person objects instantiated 
+		//code to make 8% of the Person objects infected 
 		if(Math.random()<.08) {
 			status = 1;
 			numInfected++;
@@ -33,6 +33,7 @@ public class Person {
 		
 		//social distancing part - when do the objects have movement vx and vy?
 		//10% of the time the code below will run to give the objects a non-zero vx and vy
+		//to simulate that 10% of instantiated objects are NOT practicing social distancing
 		if(Math.random()<.1) {
 			vx  = (int)(Math.random()*(10+1)+-5);
 			vy  = (int)(Math.random()*(10+1)+-5);
@@ -59,12 +60,12 @@ public class Person {
 		if(per1.intersects(per2)) {
 			//infection only happens if one person is infected and the other has never
 			//been infected before
-			if(this.status==1 && p2.status==0) {
+			if(this.status==1 && p2.status==0) { //case person 1 is infected and person 1 is not
 				p2.status = 1;
-				numInfected++;
-			}else if(this.status==0 && p2.status==1) {
+				numInfected++; //add to total count of infected people
+			}else if(this.status==0 && p2.status==1) { //case person 2 is infected and person 1 is
 				this.status = 1;
-				numInfected++;
+				numInfected++; //add to total count of infected people
 			}			
 		}
 
@@ -85,9 +86,13 @@ public class Person {
 				
 		}
 		
+		//If person is infected, they eventually recover so that they don't 
+		//infect people forever. 
 		if(status ==1) {
 			//recoveryTime update
 			recoveryTime-=16;
+			
+			//once the person has been given enough time, they will be considered recovered
 			if(recoveryTime<=0) {
 				status = 2;
 				numInfected--;
